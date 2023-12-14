@@ -7,7 +7,7 @@ const swaggerUi = require("swagger-ui-express");
 const swaggerDocument = require("./docs/swagger.json");
 
 app.use(morgan("dev"));
-app.use("/api/v3/greeting", greetingRouter);
+app.use("/api/v4/greeting", greetingRouter);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.listen(port, () => {

@@ -11,12 +11,12 @@
     "http"
   ],
   "paths": {
-    "/api/v2/greeting/birthday": {
+    "/api/v4/greeting/birthday": {
       "get": {
         "tags": [
           "Greetings"
         ],
-        "description": "Get birthday greetings for users whose birthdays are on the current day. Returns an array of birthday greetings, or an empty array if no users have a birthday. Elder(>49) will get an additional greting picture!",
+        "description": "Get birthday greetings for users whose birthdays are on the current day. Returns an array of birthday greetings, or an empty array if no users have a birthday.",
         "responses": {
           "200": {
             "description": "Success",
@@ -69,20 +69,7 @@
                                     },
                                     "example": {
                                       "type": "string",
-                                      "example": "Happy birthday, dear [Name]! We offer special discount for the following items: [Items]"
-                                    }
-                                  }
-                                },
-                                "image": {
-                                  "type": "object",
-                                  "properties": {
-                                    "type": {
-                                      "type": "string",
-                                      "example": "string"
-                                    },
-                                    "example": {
-                                      "type": "string",
-                                      "example": "data:image/png;base64,[base64Image]"
+                                      "example": "Happy birthday, dear [lastName], [firstName]!"
                                     }
                                   }
                                 }
