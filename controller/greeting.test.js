@@ -1,21 +1,21 @@
 const { birthdayGreeting } = require('../controller/greeting');
 const repository = require('../repository/greeting');
-const { genGreetingMessageBasedOnGender } = require('../lib/msgGenerator');
+const { genGreetingMessage } = require('../lib/msgGenerator');
 
 // Mock the repository and message generator
 jest.mock('../repository/greeting', () => ({
   getUsersAreOnBirthday: jest.fn()
 }));
 jest.mock('../lib/msgGenerator', () => ({
-  genGreetingMessageBasedOnGender: jest.fn()
+  genGreetingMessage: jest.fn()
 }));
 
 describe('birthdayGreeting Controller', () => {
-  it('should return birthday greetings based on gender', async () => {
+  it('should return birthday greetings for each user', async () => {
     // Arrange
     const mockUsers = [
-      { firstname: 'John', gender: 'Male' },
-      { firstname: 'Jane', gender: 'Female' }
+      { firstname: 'John', dateofbirth: '1970-01-01' },
+      { firstname: 'Jane', dateofbirth: '2000-01-01' }
     ];
     const mockReq = {};
     const mockRes = {
@@ -23,24 +23,29 @@ describe('birthdayGreeting Controller', () => {
       send: jest.fn()
     };
     repository.getUsersAreOnBirthday.mockResolvedValue(mockUsers);
-    genGreetingMessageBasedOnGender.mockImplementation((name, gender) => {
-      return gender === "Male" ?
-        { title: "Subject: Happy Birthday!", content: `Happy birthday, dear ${name}!\nWe offer special discount 20% off for the following items:\nWhite Wine, iPhone X` } :
-        { title: "Subject: Happy Birthday!", content: `Happy birthday, dear ${name}!\nWe offer special discount 50% off for the following items:\nCosmetic, LV Handbags` };
+    genGreetingMessage.mockImplementation((name, dob) => {
+      const age = new Date().getFullYear() - new Date(dob).getFullYear();
+      const message = {
+        title: "Subject: Happy Birthday!",
+        content: `Happy birthday, dear ${name}!`
+      };
+
+      if (age > 49) {
+        // Simplified mock image URL for testing
+        message.image = `data:image/png;base64,mockImageFor${name}`;
+      }
+
+      return message;
     });
 
-    // Act
     await birthdayGreeting(mockReq, mockRes);
 
-    // Assert
     expect(repository.getUsersAreOnBirthday).toHaveBeenCalled();
-    expect(genGreetingMessageBasedOnGender).toHaveBeenCalledWith('John', 'Male');
-    expect(genGreetingMessageBasedOnGender).toHaveBeenCalledWith('Jane', 'Female');
-    expect(mockRes.status).toHaveBeenCalledWith(200);
-    expect(mockRes.send).toHaveBeenCalledWith({
-      data: mockUsers.map(user => genGreetingMessageBasedOnGender(user.firstname, user.gender))
+    expect(genGreetingMessage).toHaveBeenCalledTimes(mockUsers.length);
+    mockUsers.forEach(user => {
+      expect(genGreetingMessage).toHaveBeenCalledWith(user.firstname, user.dateofbirth);
     });
+    expect(mockRes.status).toHaveBeenCalledWith(200);
+    expect(mockRes.send).toHaveBeenCalledWith({ data: mockUsers.map(user => genGreetingMessage(user.firstname, user.dateofbirth)) });
   });
-
-  // Add more test cases as necessary
 });

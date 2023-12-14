@@ -16,7 +16,7 @@ describe('getUsersAreOnBirthday', () => {
 
     expect(result).toEqual(mockUsers);
     expect(pool.query).toHaveBeenCalledWith(`
-        SELECT firstName, gender
+        SELECT firstName, dateofbirth
         FROM users
         WHERE date_part('month', users.dateofbirth) = date_part('month', CURRENT_DATE) AND date_part('day', users.dateofbirth) = date_part('day', CURRENT_DATE)`);
   });
