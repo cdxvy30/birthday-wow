@@ -1,12 +1,12 @@
 const repository = require('../repository/greeting');
-const { genGreetingMessageBasedOnGender } = require("../lib/msgGenerator");
+const { genGreetingMessage } = require("../lib/msgGenerator");
 
 const birthdayGreeting = async(req, res) => {
   try {
     const birthdayUsers = await repository.getUsersAreOnBirthday();
     const data = []
     for (const user of birthdayUsers) {
-      data.push(genGreetingMessageBasedOnGender(user.firstname, user.gender));
+      data.push(genGreetingMessage(user.firstname, user.dateofbirth));
     }
     return res.status(200).send({data});
   } catch (error) {
