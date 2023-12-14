@@ -21,7 +21,7 @@ router.get('/birthday',
                               },
                               content: {
                                   type: 'string',
-                                  example: "Happy birthday, dear [lastName], [firstName]!"
+                                  example: "Happy birthday, dear [firstName]!"
                               },
                           }
                       }

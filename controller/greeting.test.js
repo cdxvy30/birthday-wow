@@ -14,8 +14,8 @@ describe('birthdayGreeting Controller', () => {
   it('should return birthday greetings for each user', async () => {
     // Arrange
     const mockUsers = [
-      { lastname: 'Doe', firstname: 'John' },
-      { lastname: 'Smith', firstname: 'Jane' }
+      { firstName: 'John' },
+      { firstName: 'Jane' }
     ];
     const mockReq = {};
     const mockRes = {
@@ -23,7 +23,7 @@ describe('birthdayGreeting Controller', () => {
       send: jest.fn()
     };
     repository.getUsersAreOnBirthday.mockResolvedValue(mockUsers);
-    genGreetingMessage.mockImplementation((lastName, firstName) => ({ title: "Happy Birthday", content: `Hello ${lastName}, ${firstName}` }));
+    genGreetingMessage.mockImplementation((firstName) => ({ title: "Happy Birthday", content: `Happy birthday, dear ${firstName}` }));
 
     // Act
     await birthdayGreeting(mockReq, mockRes);
@@ -32,9 +32,9 @@ describe('birthdayGreeting Controller', () => {
     expect(repository.getUsersAreOnBirthday).toHaveBeenCalled();
     expect(genGreetingMessage).toHaveBeenCalledTimes(mockUsers.length);
     mockUsers.forEach(user => {
-      expect(genGreetingMessage).toHaveBeenCalledWith(user.lastname, user.firstname);
+      expect(genGreetingMessage).toHaveBeenCalledWith(user.firstName);
     });
     expect(mockRes.status).toHaveBeenCalledWith(200);
-    expect(mockRes.send).toHaveBeenCalledWith({ data: mockUsers.map(user => genGreetingMessage(user.lastname, user.firstname)) });
+    expect(mockRes.send).toHaveBeenCalledWith({ data: mockUsers.map(user => genGreetingMessage(user.firstName)) });
   });
 });
