@@ -3,17 +3,30 @@ const router = express.Router();
 const controller = require('../controller/greeting');
 
 router.get('/birthday',
-  /* 	#swagger.tags = ['Greetings']
-      #swagger.description = 'A list of birthday greetings for users on birthday on the current day, or an empty array if no birthdays are found'
+  /*  #swagger.tags = ['Greetings']
+      #swagger.description = 'Get birthday greetings for users whose birthdays are on the current day. Returns an array of birthday greetings, or an empty array if no users have a birthday. Different gender will get different discount items.'
       #swagger.responses[200] = {
           description: 'Success',
           schema: {
-              data: [
-                  {
-                      "title": "Subject: Happy Birthday!",
-                      "content": "Happy birthday, dear Robert!"
+              type: 'object',
+              properties: {
+                  data: {
+                      type: 'array',
+                      items: {
+                          type: 'object',
+                          properties: {
+                              title: {
+                                  type: 'string',
+                                  example: "Subject: Happy Birthday!"
+                              },
+                              content: {
+                                  type: 'string',
+                                  example: "Happy birthday, dear [Name]! We offer special discount for the following items: [Items]"
+                              }
+                          }
+                      }
                   }
-              ]
+              }
           }
       }
   */
