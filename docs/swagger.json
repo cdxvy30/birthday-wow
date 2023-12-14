@@ -3,7 +3,7 @@
   "info": {
     "title": "Birthday Greeting Sample",
     "description": "API document about getting greeting message for people on birthday!",
-    "version": "1.0.0"
+    "version": "2.0.0"
   },
   "host": "localhost:5050",
   "basePath": "/",
@@ -16,25 +16,67 @@
         "tags": [
           "Greetings"
         ],
-        "description": "A list of birthday greetings for users on birthday on the current day, or an empty array if no birthdays are found",
+        "description": "Get birthday greetings for users whose birthdays are on the current day. Returns an array of birthday greetings, or an empty array if no users have a birthday. Different gender will get different discount items.",
         "responses": {
           "200": {
             "description": "Success",
             "schema": {
               "type": "object",
               "properties": {
-                "data": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "title": {
-                        "type": "string",
-                        "example": "Subject: Happy Birthday!"
-                      },
-                      "content": {
-                        "type": "string",
-                        "example": "Happy birthday, dear Robert!"
+                "type": {
+                  "type": "string",
+                  "example": "object"
+                },
+                "properties": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "example": "array"
+                        },
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "type": {
+                              "type": "string",
+                              "example": "object"
+                            },
+                            "properties": {
+                              "type": "object",
+                              "properties": {
+                                "title": {
+                                  "type": "object",
+                                  "properties": {
+                                    "type": {
+                                      "type": "string",
+                                      "example": "string"
+                                    },
+                                    "example": {
+                                      "type": "string",
+                                      "example": "Subject: Happy Birthday!"
+                                    }
+                                  }
+                                },
+                                "content": {
+                                  "type": "object",
+                                  "properties": {
+                                    "type": {
+                                      "type": "string",
+                                      "example": "string"
+                                    },
+                                    "example": {
+                                      "type": "string",
+                                      "example": "Happy birthday, dear [Name]! We offer special discount for the following items: [Items]"
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
                       }
                     }
                   }
