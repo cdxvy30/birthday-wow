@@ -7,4 +7,4 @@ app.use("/api/v1/greeting", greetingRouter);
 
 app.listen(port, () => {
   console.log(`Server listening on PORT ${port}`);
-})
+});
