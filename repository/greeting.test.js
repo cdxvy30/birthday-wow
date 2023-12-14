@@ -1,23 +1,40 @@
-const pool = require("../lib/pg-pool");
-const { getUsersAreOnBirthday } = require("./greeting");
+// Import your repository functions
+const { getUsersAreOnBirthday } = require('./greeting');
 
-// Mock the pool dependency
-jest.mock("../lib/pg-pool", () => ({
-  query: jest.fn()
-}));
+// Mock Mongoose
+jest.mock('mongoose', () => {
+  const mockFind = jest.fn().mockReturnThis();
+  const mockSelect = jest.fn();
+  const mockModel = jest.fn(() => ({
+    find: mockFind,
+    select: mockSelect.mockImplementation(() => ({
+      then: jest.fn().mockImplementation(callback => callback([{ firstName: 'John' }])),
+      catch: jest.fn()
+    }))
+  }));
 
-describe('getUsersAreOnBirthday', () => {
-  it('should return users who have their birthday at today', async () => {
-    const mockUsers = [];
+  return {
+    connect: jest.fn().mockImplementation(() => ({
+      then: jest.fn().mockReturnThis(),
+      catch: jest.fn()
+    })),
+    model: mockModel,
+    Schema: jest.fn()
+  };
+});
 
-    pool.query.mockResolvedValue({ rows: mockUsers });
-
-    const result = await getUsersAreOnBirthday();
-
-    expect(result).toEqual(mockUsers);
-    expect(pool.query).toHaveBeenCalledWith(`
-        SELECT firstName, lastName
-        FROM users
-        WHERE date_part('month', users.dateofbirth) = date_part('month', CURRENT_DATE) AND date_part('day', users.dateofbirth) = date_part('day', CURRENT_DATE)`);
+describe('User Repository', () => {
+  // Resetting the mock implementation
+  beforeEach(() => {
+    jest.clearAllMocks();
   });
+
+  it('should find users on their birthday', async () => {
+    const users = await getUsersAreOnBirthday();
+    expect(users).toEqual([{ firstName: 'John' }]);
+    expect(jest.mocked(mongoose.model()).find).toHaveBeenCalled();
+    expect(jest.mocked(mongoose.model()).select).toHaveBeenCalledWith('firstName -_id');
+  });
+
+  // Additional tests can be added here as needed
 });
