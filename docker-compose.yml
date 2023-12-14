@@ -5,26 +5,27 @@ services:
     build:
       dockerfile: Dockerfile
     environment:
-      - DB_HOST=db
-      - DB_USER=postgres
-      - DB_PASSWORD=postgres
-      - DB_PORT=5432
-      - DB_DATABASE=postgres
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=example
+      - MONGO_HOST=mongodb
+      - MONGO_PORT=27017
+      - MONGO_DATABASE=admin
     volumes:
       - .:/app
     ports:
       - "5050:5050"
     depends_on:
-      - db
+      - mongodb
     entrypoint: npm run start 
     restart: always
-  db:
-    image: postgres:14.7-alpine
+
+  mongodb:
+    image: mongo:latest
     ports:
-      - "5433:5432"
+      - "27017:27017"
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=example
     restart: always
     volumes:
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
