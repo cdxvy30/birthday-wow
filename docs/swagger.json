@@ -11,7 +11,7 @@
     "http"
   ],
   "paths": {
-    "/api/v2/greeting/birthday": {
+    "/api/v3/greeting/birthday": {
       "get": {
         "tags": [
           "Greetings"
