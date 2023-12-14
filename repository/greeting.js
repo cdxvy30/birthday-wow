@@ -1,13 +1,12 @@
 const pool = require("../lib/pg-pool");
 
-const getUsersAreOnBirthDay = async() => {
+const getUsersAreOnBirthday = async() => {
   try {
     const query = `
         SELECT firstName
         FROM users
-        WHERE date_part('month', users.dateofbirth) = 8 AND date_part('day', users.dateofbirth) = 8`;
+        WHERE date_part('month', users.dateofbirth) = date_part('month', CURRENT_DATE) AND date_part('day', users.dateofbirth) = date_part('day', CURRENT_DATE)`;
     const usersAreOnTheirBirthday = await pool.query(query);
-    console.log(usersAreOnTheirBirthday.rows);
     return usersAreOnTheirBirthday.rows;
   } catch (error) {
     console.log(error);
@@ -16,5 +15,5 @@ const getUsersAreOnBirthDay = async() => {
 };
 
 module.exports = {
-  getUsersAreOnBirthDay
+  getUsersAreOnBirthday
 }

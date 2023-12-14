@@ -3,7 +3,7 @@ const { genGreetingMessage } = require("../lib/msgGenerator");
 
 const birthdayGreeting = async(req, res) => {
   try {
-    const birthdayUsers = await repository.getUsersAreOnBirthDay();
+    const birthdayUsers = await repository.getUsersAreOnBirthday();
     const data = []
     for (const user of birthdayUsers) {
       data.push(genGreetingMessage(user.firstname));
