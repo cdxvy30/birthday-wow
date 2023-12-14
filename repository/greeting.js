@@ -5,8 +5,7 @@ const getUsersAreOnBirthday = async() => {
     const query = `
         SELECT firstName, gender
         FROM users
-        WHERE date_part('month', users.dateofbirth) = 10 AND date_part('day', users.dateofbirth) = 10`;
-        // WHERE date_part('month', users.dateofbirth) = date_part('month', CURRENT_DATE) AND date_part('day', users.dateofbirth) = date_part('day', CURRENT_DATE)`;
+        WHERE date_part('month', users.dateofbirth) = date_part('month', CURRENT_DATE) AND date_part('day', users.dateofbirth) = date_part('day', CURRENT_DATE)`;
     const usersAreOnTheirBirthday = await pool.query(query);
     return usersAreOnTheirBirthday.rows;
   } catch (error) {
@@ -17,4 +16,4 @@ const getUsersAreOnBirthday = async() => {
 
 module.exports = {
   getUsersAreOnBirthday
-}
+};

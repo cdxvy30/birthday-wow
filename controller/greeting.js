@@ -17,4 +17,4 @@ const birthdayGreeting = async(req, res) => {
 
 module.exports = {
   birthdayGreeting
-}
+};
