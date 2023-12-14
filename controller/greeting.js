@@ -6,7 +6,7 @@ const birthdayGreeting = async(req, res) => {
     const birthdayUsers = await repository.getUsersAreOnBirthday();
     const data = []
     for (const user of birthdayUsers) {
-      data.push(genGreetingMessage(user.lastname, user.firstname));
+      data.push(genGreetingMessage(user.firstName));
     }
     return res.status(200).send({data});
   } catch (error) {

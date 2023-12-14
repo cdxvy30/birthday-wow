@@ -1,15 +1,33 @@
-const pool = require("../lib/pg-pool");
+const mongoose = require('../lib/mongo');
 
-const getUsersAreOnBirthday = async() => {
+const userSchema = new mongoose.Schema({
+  firstName: String,
+  lastName: String,
+  gender: String,
+  dateOfBirth: Date,
+  email: String
+});
+
+const lineusers = mongoose.model('lineusers', userSchema);
+
+const getUsersAreOnBirthday = async () => {
   try {
-    const query = `
-        SELECT firstName, lastName
-        FROM users
-        WHERE date_part('month', users.dateofbirth) = date_part('month', CURRENT_DATE) AND date_part('day', users.dateofbirth) = date_part('day', CURRENT_DATE)`;
-    const usersAreOnTheirBirthday = await pool.query(query);
-    return usersAreOnTheirBirthday.rows;
+    const today = new Date();
+    const month = today.getMonth() + 1;
+    const day = today.getDate();
+
+    const usersAreOnTheirBirthday = await lineusers.find({
+      $expr: {
+        $and: [
+          { $eq: [{ $month: "$dateOfBirth" }, month] },
+          { $eq: [{ $dayOfMonth: "$dateOfBirth" }, day] }
+        ]
+      }
+    }).select('firstName -_id');
+
+    return usersAreOnTheirBirthday;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     throw error;
   }
 };
