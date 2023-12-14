@@ -3,7 +3,7 @@
   "info": {
     "title": "Birthday Greeting Sample",
     "description": "API document about getting greeting message for people on birthday!",
-    "version": "2.0.0"
+    "version": "1.0.0"
   },
   "host": "localhost:5050",
   "basePath": "/",
@@ -11,7 +11,7 @@
     "http"
   ],
   "paths": {
-    "/api/v1/greeting/birthday": {
+    "/api/v2/greeting/birthday": {
       "get": {
         "tags": [
           "Greetings"
