@@ -5,7 +5,7 @@ There are six version of birthday greeting API, the example of different version
 ## How to use
 1. Clone the repo:
   ```
-  git clone https://github.com/cdxvy30/birthday-wow
+  git clone https://github.com/cdxvy30/birthday-wow.git
   ```
 2. Checkout to the branch `vX` ( `X = 1~6` )
   ```
